@@ -6,9 +6,15 @@ int getRandomNumber(int min, int max) {
 }
 
 int main() {
-    int a[1000][1000];
-    int i[1000][1000];
-    int ai[1000][1000];
+    int **a = new int*[1000];
+    int **i = new int*[1000];
+    int **ai = new int*[1000];
+
+    for (int k=0; k<1000; k++) {
+        a[k] = new int[1000];
+        i[k] = new int[1000];
+        ai[k] = new int[1000];
+    }
 
     ofstream outputA;
 	outputA.open("a.txt");
@@ -16,8 +22,8 @@ int main() {
     ofstream outputI;
     outputI.open("i.txt");
 
-    ofstream outputAI;
-    outputAI.open("ai.txt");
+    ofstream outputAi;
+    outputAi.open("ai.txt");
 
     for(int j=0; j<1000; j++) {
         for (int k=0; k<1000; k++) {
@@ -32,15 +38,36 @@ int main() {
             }
 
             outputI<<i[j][k]<<" ";
+
+            int total = 0;
+            for (int m = 0; m <j; m++) {
+                total += a[j][k] * i[k][m];
+            }
+
+            ai[j][k] = total;
+
+            outputAi<<a[j][k]<<" ";
         }
 
         outputA<<endl;
         outputI<<endl;
+        outputAi<<endl;
     }
 
     outputA.close();
     outputI.close();
-    outputAI.close();
+    outputAi.close();
+
+    for (int k=0; k<1000; i++) {
+        delete[] a[k];
+        delete[] i[k];
+        delete[] ai[k];
+    }
+
+    delete[] a;
+    delete[] i;
+    delete[] ai;
+    
 
     return 0;
 }
